@@ -1,4 +1,10 @@
 //Demo of image replacer chrome extension - from Dan Shiffman's Clarifai API example
+var clientID = 'eWxNW-xStnWuGcwpRWd-hD17g1GEGCDonqxQ8iAk';
+var clientSecret = 'ckGbfL_gcWWtdEV8x9B_g0Pp8ptcX5K6wshY_PUK';
+var baseUrl = 'https://api-alpha.clarifai.com/v1/';
+
+var accessToken; //for programmatically generating a new access token
+
 var imgURLS = ["http://i2.cdn.turner.com/cnnnext/dam/assets/151207065545-01-obama-speech-1207-overlay-tease.jpg",
 "http://www.history.com/s3static/video-thumbnails/AETN-History_VMS/21/115/History_Engineering_the_Taj_Mahal_42712_reSF_HD_still_624x352.jpg",
 "https://vice-images.vice.com/images/articles/crops/2015/07/01/donald-trump-is-losing-his-insane-pr-war-against-mexico-1435778037-crop_mobile.jpg?resize=*:*&output-quality=75",
@@ -16,8 +22,7 @@ var imgURLS = ["http://i2.cdn.turner.com/cnnnext/dam/assets/151207065545-01-obam
 "http://i.kinja-img.com/gawker-media/image/upload/s--FJ4m_ViD--/18j05qgz6tfxjjpg.jpg",
 "http://thumbs.dreamstime.com/z/diet-woman-eating-vegetable-salad-26750865.jpg"];
 
-// //don't need this array of image elements might now, might need it later
-// var imgElts = [];
+
 
 function setup() {
 
@@ -33,19 +38,44 @@ function setup() {
   }
 
 
-  function imageToText(imgElt, imgURL, div) {
-    imgElt.mousePressed(queryClarifai); //when you click the image ELEMENT, then query the Clarifai API
+  //use this ajax request to programmatically generate a new access token
+  var data = {
+    'grant_type': 'client_credentials',
+    'client_id': clientID,
+    'client_secret': clientSecret
+  }
 
-    function queryClarifai() {
-      $.ajax({
-      url: 'https://api.clarifai.com/v1/tag/',
-      type: 'GET',
-      beforeSend: function(xhr) {
-          xhr.setRequestHeader('Authorization', 'Bearer 2IiduH1pWlJeCBl53NKwfkkkRkxXu6');
-     },
-     data: {
-         url: imgURL //here's where you access the image URL to make the query
-     },
+  $.ajax({
+    'type': 'POST',
+    'url': baseUrl + 'token',
+    'data': data,
+    success: function (response) { 
+      console.log(response);
+      accessToken = response;
+      askClarifai();
+    },
+    error: function (err) { 
+      console.log(err);
+    }
+  });
+
+  //now query the clarifai API when you click on the image
+  function askClarifai() {
+
+    function imageToText(imgElt, imgURL, div) {
+      imgElt.mousePressed(queryClarifai); //when you click the image ELEMENT, then query the Clarifai API
+
+      function queryClarifai() {
+
+        $.ajax({
+        url: 'https://api.clarifai.com/v1/tag/',
+        type: 'GET',
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken.access_token);
+        },
+        data: {
+          url: imgURL //here's where you access the image URL to make the query
+        },
 
       success: function (response) {  //run this function if you get the data back successfully
 
@@ -82,7 +112,7 @@ function setup() {
         }
 
         console.log(posTagging);
-        
+
 
         var choice = floor(random(0, tagsArray.length)); //choose a random number to pick a tag from the list
 
@@ -91,11 +121,7 @@ function setup() {
         description.parent(div);
         div.size(imgElt.width, imgElt.height);
         div.style('background-color', '#e6e6e6');
-       
-
-
-
-    },
+       },
 
     error: function (err) { 
       console.log(err);
@@ -103,6 +129,10 @@ function setup() {
   });
 }
   }
+
+
+  }
+
 
 
 
