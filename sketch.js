@@ -56,6 +56,13 @@ function setup() {
         var tagsArray = response.results[0].result.tag.classes;
         console.log(tagsArray);
      
+
+        // //POS TAGGING WITH RITA
+        // for (var i = 0; i<tagsArray.length; i++) {
+        //   var pos = RiTa.getPosTags(tagsArray[i]);
+        //   console.log(tagsArray[i],pos);
+        // }        
+
  
         //For every tag from clarifai
         //Do the part of speech tagging using NLP Compromise - create an object that holds POS as the key, with all of the tags
@@ -63,10 +70,10 @@ function setup() {
 
           var posTagging = {}; //empty object to hold parts of speech
           var partSpeech = nlp.pos(tagsArray[i]).tags().toString(); //get part of speech, convert from array to string
-          console.log(partSpeech);
+          console.log(tagsArray[i], partSpeech);
           // posTagging[partSpeech] = tagsArray[i];
 
-          posTagging[partSpeech] = [ ];
+          posTagging[partSpeech] = tagsArray[i];
           // console.log(tagsArray[i],partspeech);
         }
 
