@@ -22,6 +22,7 @@ var imgURLS = ["http://i2.cdn.turner.com/cnnnext/dam/assets/151207065545-01-obam
 function setup() {
 
   noCanvas();
+
   for (var i = 0; i < imgURLS.length; i++){
     var imgURL = imgURLS[i];
     var div = createDiv(''); //make a div to be a container for the image
@@ -30,8 +31,6 @@ function setup() {
     //imgElts.push(imgElt);
     imageToText(imgElt, imgURL, div); //passing it to a holder function called imageToText
   }
-
-
 
 
   function imageToText(imgElt, imgURL, div) {
@@ -58,11 +57,20 @@ function setup() {
         console.log(tagsArray);
      
  
-        //Do the part of speech tagging using NLP Compromise
+        //For every tag from clarifai
+        //Do the part of speech tagging using NLP Compromise - create an object that holds POS as the key, with all of the tags
         for (var i = 0; i<tagsArray.length; i++){
-          var partspeech = nlp.pos(tagsArray[i]).tags();
-          console.log(tagsArray[i],partspeech);
+
+          var posTagging = {}; //empty object to hold parts of speech
+          var partSpeech = nlp.pos(tagsArray[i]).tags().toString(); //get part of speech, convert from array to string
+          console.log(partSpeech);
+          // posTagging[partSpeech] = tagsArray[i];
+
+          posTagging[partSpeech] = [ ];
+          // console.log(tagsArray[i],partspeech);
         }
+
+        console.log(posTagging);
 
         var choice = floor(random(0, tagsArray.length)); //choose a random number to pick a tag from the list
 
