@@ -69,15 +69,20 @@ function setup() {
         for (var i = 0; i<tagsArray.length; i++){
 
           var posTagging = {}; //empty object to hold parts of speech
+
           var partSpeech = nlp.pos(tagsArray[i]).tags().toString(); //get part of speech, convert from array to string
           console.log(tagsArray[i], partSpeech);
-          // posTagging[partSpeech] = tagsArray[i];
 
-          posTagging[partSpeech] = tagsArray[i];
-          // console.log(tagsArray[i],partspeech);
+          if (!posTagging[partSpeech]) { //if the part of speech is not yet a key in the object posTagging, set it as a key
+            posTagging[partSpeech] = [];
+          } 
+
+          posTagging[partSpeech].push(tagsArray[i]); //add the tag to the corresponding part of speech array inside the object
+
         }
 
         console.log(posTagging);
+        
 
         var choice = floor(random(0, tagsArray.length)); //choose a random number to pick a tag from the list
 
