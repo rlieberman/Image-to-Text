@@ -1,0 +1,150 @@
+My notes
+----------------
+for chrome extension: what are people browsing most? political ones? all the crazy stuff that's happening in the world?
+think more about use cases and experience for the user
+look at toronto deep learning example for ideas about how to construct the sentence
+idea of the absent image / invisible image
+look at interesting JPG bot
+how context is lost
+absent image makes you imagine what's there
+also the idea of traces
+
+
+Hub Feedback
+----------------
+what is the statement i am trying to make?
+am i trying to make a political statement? what is your voice, what are you trying to say?
+what is the call to action? why you should download the app
+also keep it simple
+remove all the nouns
+could do it as a twitter bot, experiment with that different format
+idea: people who upload selfies on twitter, or uploads a photo of themselves, give them a photo of something
+how could i make the selfie generic? give people a description of themselves
+also could play around with the twitter bot as a different form
+
+
+
+Abhi Feedback
+----------------
+on NYTimes, they have an alt tag on the image to describe exactly what the image is about
+could use something like that in the mashup 
+trump -- it could be "this is an image of trump"
+how specific do i want to be? another approach
+  - take the image
+  - do a query to tineye or something with similar images
+  - create a group of images that are similar images
+  - take a group of the images, feed them through clarifai and get all the tags
+  - see the most common tags and then construct the sentence from there
+  - that way it's not totally random
+start it off as a twitter bot
+  - tweet an image
+  - or pick randomly an image, tweet back the description of the image
+  - trending images from twitter and then describe them in 140 characters or less
+and then make a chrome extension as a secondary thing for people to download
+  - removes all image
+  - image to text chrome extension
+placeholder image should be its own image, add a little rebecca copyright at the bottom
+idea of making a new image
+node modules to create images from text (and put a copyright on it as well)
+
+
+
+Ross and Jason Feedback
+----------------------------
+add indefinite article in front of the second noun
+like the simplicity
+could use wordnik top exampl
+love to see the option for a lot more depth of the text
+jason likes simple intro + what if you could click to see more to understand about the image
+contextual background + cultural reference points (ie http://www.imageatlas.org/)
+replacing the image with a full paragraph rather than a box, that way it changes the layout of the website
+ross: could make it a bookmarklet -- easier than chrome extension
+jason: could conjoin it with something that people actually need (not as laborious as a chrome extension)
+
+
+
+Oryan Feedback
+----------------------------
+could be a useful tool for blind people to provide a description of the image
+array of tags - which of these is the closest one? could be a gamey way
+maybe you can click to be able to bring back the picture
+or maybe it's more difficult to bring it back
+instagram or a platform that's just for pictures
+what if you went to instagram and it was all just descriptions of absent images (related to ross's camera)
+a new social media, text-a-gram, images of descriptions of images
+i'm interested in the one-sentence description
+
+
+
+Sweta Feedback
+----------------------------
+would be nice if you could go back and see what the image was? imagination is nie
+context free grammar -- look at examples for this
+give it a few different sentence structures rather than the just one to breathe life into it a bit more
+you can do part of speech tagging in rita
+want to be able to imagine what it is
+want there to be enough description that it will spark the imagination (vagueness will be nice)
+how can i make it poetic
+to think about: text that you're generating and the sentiment of it
+playing around with the parts of speech and context free grammar
+model photo -- sees the water, not the main thing in the image; weighting with in it
+
+
+
+Craig Feedback
+----------------------------
+likes the simplicity
+does it change every time?
+fun game element OR takes it more seriously and decontextualizes more seriously 
+images / taking away context
+removing the option of having the image to supplement the words
+idea of swapping images based on the description
+"this is politics, an image of law enforcement"
+how machine is interpreting what it's seeing and how we interpret the machine's interpretation of the image -- using the machine's description as a way to get a different image
+  - the machine sees the content not the context
+idea of how it works in a social media context (seeing your own images) or a political / news context
+
+
+
+Daria Feedback
+----------------------------
+how do you turn it off and go back to see the image
+trying it on facebook / familiar images
+keep it as a chrome extension
+social things
+pinterest - places where there are grids of images
+idea of browsing pinterest with words -- or tumblr -- would that be interesting?
+"image overload"
+would using words be more easily digestible?
+should color play into it at all? do you take the dominant color from the picture and make the background that color?
+  - look up pixar colorscript
+  - shows mood of whole thing
+  - goes back to averaging project
+
+
+
+Shiffman's Feedback
+----------------------------
+what i have now is very different than what is o
+you come to the page, press a button and the images go away
+you come to the page and it loads, there are these placeholder sentences
+can you reverse it, do you want to undo the action?
+simplicity is really nice (unlike the stuff that Ross is doing)
+short things, feels important that it's an accurate sentence
+NLP compromise package will be good for this -- will tell you if the word is plural or not -- matching tense, articles, etc.
+the vibe is not wrong and robotic
+context is so important
+will be different when it's in the page with lots of other stuff
+one thing technically will be difficult is on the page -- finding images, but what about ads and stuff?
+start with one website and build it out fully, for nytimes.com and then i'll put it on other sites
+  - eventually you can build it out
+  - addie's project can target github
+  - constraint of showing it next week
+  - targeting is good
+for next week: pick either social media site, nytimes, or something 
+  - instagram is a good place to start
+  - visual treatment that i use will play an important role
+  - want it to feel like a placeholder image
+  - absence is important
+  - might need some small indicator that there was a visual there -- border, etc. you can play around with
+
