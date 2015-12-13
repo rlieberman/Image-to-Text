@@ -28,16 +28,6 @@ function setup() {
 
   noCanvas();
 
-  for (var i = 0; i < imgURLS.length; i++){
-    var imgURL = imgURLS[i];
-    var div = createDiv(''); //make a div to be a container for the image
-    var imgElt = createImg(imgURL);
-    imgElt.parent(div); //put the image inside the container
-    //imgElts.push(imgElt);
-    imageToText(imgElt, imgURL, div); //passing it to a holder function called imageToText
-  }
-
-
   //use this ajax request to programmatically generate a new access token
   var data = {
     'grant_type': 'client_credentials',
@@ -61,6 +51,16 @@ function setup() {
 
   //now query the clarifai API when you click on the image
   function askClarifai() {
+
+    for (var i = 0; i < imgURLS.length; i++){
+      var imgURL = imgURLS[i];
+      var div = createDiv(''); //make a div to be a container for the image
+      var imgElt = createImg(imgURL);
+      imgElt.parent(div); //put the image inside the container
+      //imgElts.push(imgElt);
+      imageToText(imgElt, imgURL, div); //passing it to a holder function called imageToText
+      
+    }
 
     function imageToText(imgElt, imgURL, div) {
       imgElt.mousePressed(queryClarifai); //when you click the image ELEMENT, then query the Clarifai API
