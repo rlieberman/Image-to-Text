@@ -57,20 +57,20 @@ function setup() {
       var div = createDiv(''); //make a div to be a container for the image
       var imgElt = createImg(imgURL);
       imgElt.parent(div); //put the image inside the container
-      //imgElts.push(imgElt);
+
       imageToText(imgElt, imgURL, div); //passing it to a holder function called imageToText
       
     }
 
     function imageToText(imgElt, imgURL, div) {
-      imgElt.mousePressed(queryClarifai); //when you click the image ELEMENT, then query the Clarifai API
+      queryClarifai();
 
       function queryClarifai() {
-
+      
         $.ajax({
-        url: 'https://api.clarifai.com/v1/tag/',
-        type: 'GET',
-        beforeSend: function(xhr) {
+          url: 'https://api.clarifai.com/v1/tag/',
+          type: 'GET',
+          beforeSend: function(xhr) {
           xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken.access_token);
         },
         data: {
@@ -78,22 +78,12 @@ function setup() {
         },
 
       success: function (response) {  //run this function if you get the data back successfully
-
-        imgElt.hide(); //hide the image element
-        // console.log(response); //print raw response, including confidence scores for each tag
-
+     
         //Get all the image tags from clarifai
         var tagsArray = response.results[0].result.tag.classes;
         console.log(tagsArray);
      
 
-        // //POS TAGGING WITH RITA
-        // for (var i = 0; i<tagsArray.length; i++) {
-        //   var pos = RiTa.getPosTags(tagsArray[i]);
-        //   console.log(tagsArray[i],pos);
-        // }        
-
- 
         //For every tag from clarifai
         //Do the part of speech tagging using NLP Compromise - create an object that holds POS as the key, with all of the tags
         for (var i = 0; i<tagsArray.length; i++){
@@ -111,29 +101,42 @@ function setup() {
 
         }
 
-        console.log(posTagging);
+        console.log(posTagging); //print the object with tags and parts of speech
 
 
         var choice = floor(random(0, tagsArray.length)); //choose a random number to pick a tag from the list
 
+        imgElt.hide();
+        console.log("image is hidden");
+
+        div.size(imgElt.width, imgElt.height);
+        div.style('background-color', '#e6e6e6');
+
         //suggestion for next timecontext-free grammar; build a sentence from part 1, part 2, part 3, etc.
         var description = createP("This is a " + tagsArray[0] + ", an image of " + tagsArray[choice]);
         description.parent(div);
-        div.size(imgElt.width, imgElt.height);
-        div.style('background-color', '#e6e6e6');
-       },
+
+        //when you click the div, show the image and hide the description
+        div.mousePressed(function() { 
+
+          imgElt.show(); 
+          description.hide();
+          div.style('background-color', 'transparent');
+
+        });
+
+
+      },
 
     error: function (err) { 
       console.log(err);
     },
   });
+  }
 }
-  }
 
 
-  }
-
-
+}
 
 
   
