@@ -1,3 +1,12 @@
+//ISSUES
+//part of speech tagging is not good with Rita, need to switch over to NLP compromise
+//when object POS tagging is a global variable, its picking random words that don't go with that image
+//need to figure out variable scope for POS tagging
+//also lots of messy functions and scoping - how can i clean up the code?
+//also do i want to query wordnik for hypernyms? not sure about this
+
+
+
 //Demo of image replacer chrome extension - from Dan Shiffman's Clarifai API example
 var clientID = 'eWxNW-xStnWuGcwpRWd-hD17g1GEGCDonqxQ8iAk';
 var clientSecret = 'ckGbfL_gcWWtdEV8x9B_g0Pp8ptcX5K6wshY_PUK';
@@ -91,7 +100,7 @@ function setup() {
         
         //Get all the image tags from clarifai
         var tagsArray = response.results[0].result.tag.classes;
-        console.log(tagsArray);
+        // console.log(tagsArray);
 
 
         //For every tag from clarifai
@@ -100,7 +109,7 @@ function setup() {
 
         for (var i = 0; i<tagsArray.length; i++){
 
-          var partSpeech = nlp.pos(tagsArray[i]).tags().toString(); //get part of speech, convert from array to string
+          var partSpeech = RiTa.getPosTags(tagsArray[i]); //get part of speech, convert from array to string //get part of speech, convert from array to string
           // console.log(tagsArray[i], partSpeech);
 
           if (!posTagging[partSpeech]) { //if the part of speech is not yet a key in the object posTagging, set it as a key
@@ -111,10 +120,8 @@ function setup() {
 
         }
 
-        console.log(posTagging); //print the object with tags and parts of speech
+        // console.log(posTagging); //print the object with tags and parts of speech
 
-
-        var choice = floor(random(0, tagsArray.length)); //choose a random number to pick a tag from the list
 
         //hide the image, create the grey div and add the desription
         imgElt.hide();
@@ -124,27 +131,34 @@ function setup() {
         div.style('background-color', '#e6e6e6');
 
 
-        //pick a secondary tag from our object
-        var secondnoun = posTagging['NN'].choice();
-        var article = nlp.noun(secondnoun).article();
+        var imgDescription; //empty variable for the image description
 
-        //pick an adjective if there is one
-        if ('JJ' in posTagging) {
-          var adjective = posTagging['JJ'].choice();
-        }
-      
-        console.log(article, adjective, secondnoun);
+        //step 1 get a first noun
+        var firstNoun = tagsArray[0];
+
+        //step 2 pick an adjective if there is one
+            if ('jj' in posTagging) {
+              var adjective = RiTa.randomItem(posTagging['jj']);
+            }
+
+            else {
+              adjective = ""; //if there's no adjective, return nothing
+            }
+
+        //step 3 get the second noun (not using wordnik query for now)
+        var secondNoun = RiTa.randomItem(posTagging['nn']);
+  
 
         //suggestion for next time context-free grammar; build a sentence from part 1, part 2, part 3, etc.
-        var description = createP("This is a " + tagsArray[0] + ", an image of "  + adjective + " " + nlp.noun(secondnoun).pluralize() + ".");
-        description.parent(div);
+        imgDescription = createP("This is a " + RiTa.singularize(firstNoun) + ", an image of "  + adjective + " " + RiTa.pluralize(secondNoun) + ".");
+        imgDescription.parent(div);
 
 
         //when you click the div, show the image and hide the description
         div.mousePressed(function() { 
 
           imgElt.show(); 
-          description.hide();
+          imgDescription.hide();
           div.style('background-color', 'transparent');
 
         });
